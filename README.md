@@ -1,1 +1,1 @@
-# ASP_NET6RazorPagesCRUD
+# ASP.NET 6 Razor Pages CRUD
