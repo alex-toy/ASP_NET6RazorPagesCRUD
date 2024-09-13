@@ -1,4 +1,4 @@
-using Bloggie.Web.Data;
+using Bloggie.Web.Repos;
 using Bloggie.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,11 +10,11 @@ public class AddModel : PageModel
     [BindProperty]
     public AddBlogPost AddBlogPost { get; set; }
 
-    private readonly DatabaseContext _databaseContext;
+    private readonly IBlogPostRepo _blogPostRepo;
 
-    public AddModel(DatabaseContext databaseContext)
+    public AddModel(IBlogPostRepo blogPostRepo)
     {
-        _databaseContext = databaseContext;
+        _blogPostRepo = blogPostRepo;
     }
 
     public void OnGet()
@@ -23,8 +23,7 @@ public class AddModel : PageModel
 
     public async Task<IActionResult> OnPost()
     {
-        await _databaseContext.BlogPosts.AddAsync(AddBlogPost.ToBlogPost());
-        await _databaseContext.SaveChangesAsync();
+        _ = await _blogPostRepo.AddAsync(AddBlogPost.ToBlogPost());
 
         return RedirectToPage("/admin/blogs/list");
     }

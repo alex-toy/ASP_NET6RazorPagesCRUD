@@ -1,5 +1,6 @@
 using Bloggie.Web.Data;
 using Bloggie.Web.Models.Domain;
+using Bloggie.Web.Repos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -10,29 +11,23 @@ public class EditModel : PageModel
     [BindProperty]
     public BlogPost? BlogPost { get; set; }
 
-    private readonly DatabaseContext _databaseContext;
+    private readonly IBlogPostRepo _blogPostRepo;
 
-    public EditModel(DatabaseContext databaseContext)
+    public EditModel(IBlogPostRepo blogPostRepo)
     {
-        _databaseContext = databaseContext;
+        _blogPostRepo = blogPostRepo;
     }
 
     public async Task OnGet(Guid id)
     {
-        BlogPost = await _databaseContext.BlogPosts.FindAsync(id);
+        BlogPost = await _blogPostRepo.GetAsync(id);
     }
 
     public async Task<IActionResult> OnPostEdit()
     {
         if (BlogPost is null) return RedirectToPage("/admin/blogs/list");
 
-        BlogPost? blogPostDb = await _databaseContext.BlogPosts.FindAsync(BlogPost.Id);
-
-        if (blogPostDb is null) return RedirectToPage("/admin/blogs/list");
-
-        blogPostDb.Map(BlogPost);
-
-        await _databaseContext.SaveChangesAsync();
+        await _blogPostRepo.UpdateAsync(BlogPost);
 
         return RedirectToPage("/admin/blogs/list");
     }
@@ -41,12 +36,9 @@ public class EditModel : PageModel
     {
         if (BlogPost is null) return RedirectToPage("/admin/blogs/list");
 
-        BlogPost? blogPostDb = await _databaseContext.BlogPosts.FindAsync(BlogPost.Id);
+        bool result = await _blogPostRepo.DeleteAsync(BlogPost.Id);
 
-        if (blogPostDb is null) return Page();
-
-        _databaseContext.BlogPosts.Remove(blogPostDb);
-        await _databaseContext.SaveChangesAsync();
+        if (result == false) return Page();
 
         return RedirectToPage("/admin/blogs/list");
     }

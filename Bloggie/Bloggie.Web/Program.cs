@@ -1,4 +1,5 @@
 using Bloggie.Web.Data;
+using Bloggie.Web.Repos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bloggie.Web;
@@ -10,6 +11,8 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddRazorPages();
+
+        builder.Services.AddScoped<IBlogPostRepo, BlogPostRepo>();
 
         builder.Services.AddDbContext<DatabaseContext>(options =>
         {
