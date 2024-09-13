@@ -34,7 +34,7 @@ public class AddBlogPost
             UrlHandle = UrlHandle,
             PublishedDate = PublishedDate,
             Author = Author,
-            IsVisible = IsVisible,
+            Visible = IsVisible,
         };
     }
 }
