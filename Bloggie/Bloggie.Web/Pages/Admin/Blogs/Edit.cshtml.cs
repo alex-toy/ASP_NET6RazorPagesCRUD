@@ -17,19 +17,36 @@ public class EditModel : PageModel
         _databaseContext = databaseContext;
     }
 
-    public void OnGet(Guid id)
+    public async Task OnGet(Guid id)
     {
-        BlogPost = _databaseContext.blogPosts.Find(id);
-
-        if (BlogPost is null) { return; }
+        BlogPost = await _databaseContext.BlogPosts.FindAsync(id);
     }
 
-    public IActionResult OnPost()
+    public async Task<IActionResult> OnPostEdit()
     {
         if (BlogPost is null) return RedirectToPage("/admin/blogs/list");
 
-        _databaseContext.blogPosts.Update(BlogPost);
-        _databaseContext.SaveChanges();
+        BlogPost? blogPostDb = await _databaseContext.BlogPosts.FindAsync(BlogPost.Id);
+
+        if (blogPostDb is null) return RedirectToPage("/admin/blogs/list");
+
+        blogPostDb.Map(BlogPost);
+
+        await _databaseContext.SaveChangesAsync();
+
+        return RedirectToPage("/admin/blogs/list");
+    }
+
+    public async Task<IActionResult> OnPostDelete()
+    {
+        if (BlogPost is null) return RedirectToPage("/admin/blogs/list");
+
+        BlogPost? blogPostDb = await _databaseContext.BlogPosts.FindAsync(BlogPost.Id);
+
+        if (blogPostDb is null) return Page();
+
+        _databaseContext.BlogPosts.Remove(blogPostDb);
+        await _databaseContext.SaveChangesAsync();
 
         return RedirectToPage("/admin/blogs/list");
     }

@@ -9,6 +9,6 @@ public class DatabaseContext : DbContext
     {
     }
     
-    public DbSet<BlogPost> blogPosts { get; set; }
+    public DbSet<BlogPost> BlogPosts { get; set; }
     public DbSet<Tag> Tags { get; set; }
 }

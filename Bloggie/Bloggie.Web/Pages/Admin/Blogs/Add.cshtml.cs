@@ -21,10 +21,10 @@ public class AddModel : PageModel
     {
     }
 
-    public IActionResult OnPost()
+    public async Task<IActionResult> OnPost()
     {
-        _databaseContext.blogPosts.Add(AddBlogPost.ToBlogPost());
-        _databaseContext.SaveChanges();
+        await _databaseContext.BlogPosts.AddAsync(AddBlogPost.ToBlogPost());
+        await _databaseContext.SaveChangesAsync();
 
         return RedirectToPage("/admin/blogs/list");
     }

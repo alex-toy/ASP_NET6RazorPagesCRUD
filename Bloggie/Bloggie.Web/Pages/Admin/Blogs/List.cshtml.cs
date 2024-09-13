@@ -1,12 +1,13 @@
 using Bloggie.Web.Data;
 using Bloggie.Web.Models.Domain;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bloggie.Web.Pages.Admin.Blogs;
 
 public class ListModel : PageModel
 {
-    public List<BlogPost> BlogPosts { get; set; }
+    public List<BlogPost> BlogPosts { get; set; } = new List<BlogPost>();
 
     private readonly DatabaseContext _databaseContext;
 
@@ -15,8 +16,8 @@ public class ListModel : PageModel
         _databaseContext = databaseContext;
     }
 
-    public void OnGet()
+    public async Task OnGet()
     {
-        BlogPosts = _databaseContext.blogPosts.ToList();
+        BlogPosts = await _databaseContext.BlogPosts.ToListAsync();
     }
 }

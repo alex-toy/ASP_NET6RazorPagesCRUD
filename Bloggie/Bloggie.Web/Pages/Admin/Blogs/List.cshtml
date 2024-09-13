@@ -9,36 +9,46 @@
     </div>
 </div>
 
-<div class="container">
-    <table class="table">
-        <thead>
-            <tr>
-                <td>ID</td>
-                <td>Heading</td>
-                <td>PageTitle</td>
-                <td>Content</td>
-                <td>ShortDescription</td>
-                <td>UrlHandle</td>
-                <td>Author</td>
-                <td>FeaturedImageUrl</td>
-                <td></td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var blogPost in Model.BlogPosts)
-            {
+@if (Model.BlogPosts.Any())
+{
+    <div class="container">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@blogPost.Id</td>
-                    <td>@blogPost.Heading</td>
-                    <td>@blogPost.PageTitle</td>
-                    <td>@blogPost.Content</td>
-                    <td>@blogPost.ShortDescription</td>
-                    <td>@blogPost.UrlHandle</td>
-                    <td>@blogPost.Author</td>
-                    <td>@blogPost.FeaturedImageUrl</td>
-                    <td><a href="/admin/blogs/edit/@blogPost.Id">Edit</a></td>
+                    <td>ID</td>
+                    <td>Heading</td>
+                    <td>PageTitle</td>
+                    <td>Content</td>
+                    <td>ShortDescription</td>
+                    <td>UrlHandle</td>
+                    <td>Author</td>
+                    <td>FeaturedImageUrl</td>
+                    <td></td>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var blogPost in Model.BlogPosts)
+                {
+                    <tr>
+                        <td>@blogPost.Id</td>
+                        <td>@blogPost.Heading</td>
+                        <td>@blogPost.PageTitle</td>
+                        <td>@blogPost.Content</td>
+                        <td>@blogPost.ShortDescription</td>
+                        <td>@blogPost.UrlHandle</td>
+                        <td>@blogPost.Author</td>
+                        <td>@blogPost.FeaturedImageUrl</td>
+                        <td><a href="/admin/blogs/edit/@blogPost.Id">Edit</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="container">
+        <p>No Blogs Found</p>
+    </div>
+}
+
